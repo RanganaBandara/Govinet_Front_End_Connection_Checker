@@ -23,9 +23,9 @@ namespace Govinet_Front_End_Connection_Checker.Controllers
 
         // GET api/<CheckController>/5
         [HttpGet("{crop_name}")]
-        public async Task<IActionResult> getbycrop(string crop)
+        public async Task<IActionResult> getbycrop(Check check)
         {
-            var message= await _context.Chekers.FindAsync(crop);
+            var message= await _context.Chekers.FindAsync(check);
             var reposnse = (
               
                 message
