@@ -1,5 +1,6 @@
 ﻿using Govinet_Front_End_Connection_Checker.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -16,16 +17,22 @@ namespace Govinet_Front_End_Connection_Checker.Controllers
         }
         // GET: api/<CheckController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<IActionResult> Get()
         {
-            return new string[] { "value1", "value2" };
+            var data= await _context.Chekers.ToListAsync();
+            var response = (
+                data
+                );
+
+            return Ok( response );
         }
 
+
         // GET api/<CheckController>/5
-        [HttpGet("{crop_name}")]
-        public async Task<IActionResult> getbycrop(Check check)
+        [HttpGet("{crop}")]
+        public async Task<IActionResult> getbycrop([FromRoute ]string crop)
         {
-            var message= await _context.Chekers.FindAsync(check);
+            var message= await _context.Chekers.FindAsync(crop);
             var reposnse = (
               
                 message
@@ -40,6 +47,7 @@ namespace Govinet_Front_End_Connection_Checker.Controllers
         public async Task<IActionResult> Post([FromBody] Check chek)
         {
             await _context.Chekers.AddAsync(chek);
+            _context.SaveChanges();
             return Ok("opertion success");
         }
 
